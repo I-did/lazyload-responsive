@@ -1,4 +1,4 @@
-<FilesMatch "\.(jpeg|jpg|png|svg)$">
+<FilesMatch "\.(jpeg|jpg|png)$">
 FileETag None
 <ifModule mod_headers.c>
 Header unset ETag
