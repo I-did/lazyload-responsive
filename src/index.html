@@ -4,9 +4,20 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./css/style.css">
 	<title>Lazyload</title>
 </head>
 <body>
+	<div class="car lazy" style="background-image: linear-gradient(to left, white, hsla(0,10%,100%,0)), url(./img/car.png), url(./img/nature.jpg)"></div>
+	<img src="./img/flower.jpg" alt="#" class="flower lazy">
 	<script src="./js/lazyload.js"></script>
+	<script>
+		window.addEventListener('DOMContentLoaded', function(){
+			new lazyload({
+				selector: '.lazy',
+				mode: 'progressive'
+			});
+		});
+	</script>
 </body>
 </html>
