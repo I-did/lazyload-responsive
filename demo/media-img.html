@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/atom-one-dark.min.css">
+	<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/highlight.min.js"></script>
+	<title>Usage with img and media queries</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+		.flower-img {
+			width: 400px;
+			height: 300px;
+			object-fit: cover;
+			border: 1px solid grey;
+		}
+	</style>
+</head>
+<body>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<img src="#" alt="flower" class="flower-img lazy"
+				data-src="../src/img/flower.jpg"
+				data-media="(max-width: 768px) {../src/img/flower.992.jpg};
+										(max-width: 576px) {#}">
+<pre><code class="plaintext">HTML:</code></pre>
+<pre><code class="html">&lt;img src="#" alt="flower" class="flower-img lazy"
+     data-src="../src/img/flower.jpg"
+     data-media="(max-width: 768px) {../src/img/flower.992.jpg};
+                 (max-width: 576px) {#}"&gt;
+   </code></pre>
+	<script src="../src/js/lazyload.js"></script>
+	<script>
+		window.addEventListener('DOMContentLoaded', function(){
+			let mutationObserver = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					if (mutation.attributeName === 'src') {
+						let el = mutation.target,
+							request = new XMLHttpRequest(),
+							filesize = 0;
+						img = el.getAttribute('src');
+
+						request.open('POST', './filesize.php');
+						request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						request.send(`url=${img}`);
+						request.addEventListener('readystatechange', function() {
+							if (this.readyState === 4 && this.status === 200) {
+								filesize = this.response;
+							}
+							el.nextElementSibling.innerHTML = `<p>${img} <b>loaded</b>, ${filesize} MB</p>`;
+						});						
+					}
+				});
+			});
+
+			mutationObserver.observe(document.documentElement, {
+				attributes: true,
+				characterData: true,
+				subtree: true,
+				attributeOldValue: true,
+				attributeNewValue: true,
+				characterDataOldValue: true,
+				characterDataNewValue: true
+			});
+			new lazyload();
+		});
+	</script>
+</body>
+</html>
