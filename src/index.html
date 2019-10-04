@@ -8,8 +8,10 @@
 	<title>Lazyload</title>
 </head>
 <body>
-	<div class="car lazy" style="background-image: linear-gradient(to left, white, hsla(0,10%,100%,0)), url(./img/car.png), url(./img/nature.jpg)"></div>
-	<img src="./img/flower.jpg" alt="#" class="flower lazy">
+	<div class="car lazy"
+				data-src="linear-gradient(to left, white, transparent), url(./img/car.png), url(./img/nature.jpg)"></div>
+	<img src="#" alt="#" class="flower lazy"
+				data-src="./img/flower.jpg">
 	<script src="./js/lazyload.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', function(){
