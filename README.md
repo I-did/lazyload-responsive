@@ -1,3 +1,6 @@
-# lazyload
+# lazyload responsive
 
-<p style="color: red;">description</p>
+<p>description</p>
+
+[![Russian language](src/img/rus.svg)](#)
+[![English language](src/img/eng.svg)](#)
