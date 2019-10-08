@@ -12,10 +12,10 @@
 		id = 0;
 
 	class lazyload {
-		constructor(options) {
+		constructor(selectors, options) {
 			_ = this;
 			_.defaults = {
-				mode: 'progressive',
+				mode: 'observe',
 				selector: '.lazy',
 				srcAttr: 'data-src',
 				mediaAttr: 'data-media'
@@ -35,7 +35,7 @@
 					opt[name] = _.defaults[name];
 				}
 			}
-
+			_.init();
 		}
 
 		init() {
@@ -45,7 +45,111 @@
 				id: i,
 				tag: el,
 				dataSrc: el.getAttribute(opt.srcAttr) || el.getAttribute('data-poster'),
-				media: el.hasAttribute(opt.mediaAttr) && el.getAttribute(opt.mediaAttr).replace(/\n*\t*/g, '')
+				media: el.hasAttribute(opt.mediaAttr) && el.getAttribute(opt.mediaAttr).replace(/\n*\t*/g, ''),
+				load(observe) {
+					let currentMedia = this.checkMedia(this.firstMedia, this.otherMedia),
+						images = (this.media && currentMedia) ? this.mediaQuiries[currentMedia] : this.dataSrc,
+						tag = this.tag;
+
+					if (_.arrayEquality(images, this.currentUrl) || tag.innerHTML === String(this.dataSrc)) {
+						_.loadNextElem();
+						return;
+					} else this.currentUrl = [];
+
+ 					if (this.content) {
+ 						tag.innerHTML += this.dataSrc;
+						_.loadNextElem();
+ 					} else {
+ 						if (tag.tagName === 'IMG' || tag.tagName === 'IFRAME') {
+	 						tag.src = images;
+							this.currentUrl.push(images[i]);
+
+							if (opt.mode === 'progressive') {
+								tag.addEventListener('load', function() {
+									_.loadNextElem();
+								}, {once: true});
+							} else if (opt.mode === 'embed') {
+								console.log('msg');
+								_.loadNextElem();
+							}
+
+	 					} else if (tag.tagName === 'VIDEO') {
+	 						tag.setAttribute('poster', this.dataSrc);
+	 						for (let child of tag.children) {
+	 							if (child.tagName === 'SOURCE' || child.tagName === 'TRACK') {
+	 								child.setAttribute('src', child.getAttribute('data-src'));
+	 							}
+	 						}
+	 						tag.load();
+	 					} else {
+	 						if (opt.mode !== 'observe') {
+	 							tag.addEventListener('loaded', function() {
+									_.loadNextElem();
+								}, {once: true});
+	 						}		 						
+
+	 						tag.style.backgroundImage = '';
+
+	 						if (opt.mode === 'progressive') {
+								this.progressiveLoadBackgrounds(images);
+							} else {
+								for (let i = 0; i < images.length; i++) {
+									if (images[i].search(/gradient\(.*?\)|url\(.*?\)/) === -1) {
+										images[i] = images[i].replace(/.*/, 'url($&)');
+									}
+									this.currentUrl.push(images[i]);
+								}
+
+								tag.style.backgroundImage = String(images);
+								tag.dispatchEvent(new Event('loaded'));
+							}
+	 					}
+ 					}		
+				},
+				progressiveLoadBackgrounds(images, num) {
+					let i = ++num || 0;
+
+					if (images[i]) {
+						let url,
+							img = document.createElement('img');
+
+						this.currentUrl.push(images[i]);
+
+						if (images[i].search(/gradient\(.*?\)|url\(.*?\)/) === -1) {
+							url = images[i].replace(/.*/, 'url($&)');
+						} else url = images[i];
+
+						this.tag.style.backgroundImage += (i !== 0) ? `,${url}` : url;
+
+						if (images[i].search(/gradient\(.*?\)/) !== -1) {
+							this.progressiveLoadBackgrounds(images, i);
+						}	else {
+							img.setAttribute('src', images[i].replace(/url\((.*)\)/, '$1'));
+							img.addEventListener('load', () =>	this.progressiveLoadBackgrounds(images, i), {once: true});
+						}
+
+					} else this.tag.dispatchEvent(new Event('loaded'));
+				},
+				checkMedia: function(firstMedia, otherMedia) {
+
+					if (this.media) {
+						return (new Function('firstMedia', 'otherMedia', `
+							if (window.matchMedia('${firstMedia}').matches) {
+								return '${firstMedia}';
+							} ${(function() {
+								if (otherMedia.length === 0) return '';
+								let str = '';
+								for (let i = 0; i < otherMedia.length; i++) {
+									str += `else if (window.matchMedia('${otherMedia[i]}').matches) {return '${otherMedia[i]}'}`;
+								}
+								str += `else {
+									return false;
+								}`;
+								return str;
+							})()}
+					 `))();
+					}
+				}
 			}));
 
 			_.prepareElements();
