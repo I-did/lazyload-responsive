@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/atom-one-dark.min.css">
-	<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/highlight.min.js"></script>
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/atom-one-dark.min.css"> -->
+	<!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/highlight.min.js"></script> -->
 	<title>Usage with backgrounds and media queries</title>
 	<style>
 		* {
@@ -25,6 +25,16 @@
 	</style>
 </head>
 <body>
+	<button type="button" class="pre">btn-1</button>
+	<button type="button" class="pre">btn-2</button>
+	<!-- <button type="button" class="pre">btn-3</button> -->
+	<!-- <button type="button" class="pre">btn-4</button> -->
+	<button type="button" class="pre">btn-5</button>
+	<a href="#" class="foo">link-1</a>
+	<a href="#" class="foo">link-2</a>
+	<a href="#" class="foo">link-3</a>
+	<a href="#" class="foo">link-4</a>
+	<a href="#" class="foo">link-5</a>
 	<script>hljs.initHighlightingOnLoad();</script>
 	<div class="car-img lazy"
 				data-src="url(../src/img/smart.png)"
@@ -45,10 +55,23 @@
   background-position: center;
   background-repeat: no-repeat;
 }</code></pre>
-	<script src="../src/js/lazyload.js"></script>
+	<script src="../src/js/lazyload.es5.js"></script>
+	<!-- <script src="../src/js/lazyload.js"></script> -->
 	<script>
 		window.addEventListener('DOMContentLoaded', function(){
 			new lazyload();
+			let btns = document.querySelectorAll('.pre'),
+				links = document.querySelectorAll('.foo');
+
+				console.log((function() {
+					let a = [],
+						b = [];
+					for (let i = 0; i < btns.length || i < links.length; i++) {
+						btns[i] && a.push(btns[i]);
+						links[i] && b.push(links[i]);
+					}
+					return a.concat(b);
+				})());
 		});
 	</script>
 </body>
