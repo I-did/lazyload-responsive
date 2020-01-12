@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/atom-one-dark.min.css">
-	<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/highlight.min.js"></script>
+	<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/styles/atom-one-dark.min.css"> -->
+	<!-- <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.10/build/highlight.min.js"></script> -->
 	<title>Usage with observe mode</title>
 	<style>
 		* {
@@ -59,7 +59,7 @@
 	</style>
 </head>
 <body>
-	<script>hljs.initHighlightingOnLoad();</script>
+	<!-- <script>hljs.initHighlightingOnLoad();</script> -->
 	<div class="img-block">
 		<div class="car-img lazy"
 				data-src="url(../src/img/bmw.png),
@@ -103,7 +103,12 @@
 <pre><code class="css">document.addEventListener('DOMContentLoaded', function() {
   new lazyload();
 });</code></pre>
-	<script src="../src/js/lazyload.js"></script>
+<script>
+	window.addEventListener('scroll', function() {
+		console.log('sss');		
+	});
+</script>
+	<script src="../src/js/lazyload-responsive.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 

@@ -1,6 +1,49 @@
 # lazyload responsive
+```html
+<script src="../src/js/lazyload-responsive.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function(){
+    new lazyload();
+  });
+</script>
+```
+Режимы загрузки:
+```javascript
+new lazyload({
+  mode: 'observe' // by default; || progressive || embed
+});
+```
+Простое использование:
+```html
+<img src="../src/img/flower.jpg" alt="flower" class="flower-img lazy">
 
-[![English language](https://github.com/I-did/lazyload-responsive/blob/master/src/img/Eng.svg)](#)
-[![Russian language](https://github.com/I-did/lazyload-responsive/blob/master/src/img/Rus.svg)](#)
+<div class="car-img lazy"
+     data-src="../src/img/bmw.png"></div>
+```
+Фоны:
+```html
+<div class="car-img lazy"
+     data-src="../src/img/bmw.png"></div>
 
-The script of lazy loading with support of media queries, several loading modes (progressive, embed, observe), insert content, multiply backgrounds and support of image, video, iframe and other tags, which may be added backgrounds or inserted content.
+<div class="car-img lazy"
+     data-src="url(../src/img/bmw.png),
+               url(../src/img/bmw-logo.png),
+               linear-gradient(to bottom, black 0 33.333%, red 33.333% 66.666%, gold 66.666%)"></div>
+```
+Медиа-запросы:
+```html
+<img src="#" alt="flower" class="flower-img lazy"
+     data-src="../src/img/flower.jpg"
+     data-media="(max-width: 768px) {../src/img/flower.992.jpg};
+                 (max-width: 576px) {#}">
+
+<div class="car-img lazy"
+     data-src="url(../src/img/smart.png)"
+     data-media="(max-width: 1200px) {url(../src/img/mercedes.png)};
+                 (max-width: 768px) {url(../src/img/bmw.png)};
+                 (max-width: 576px) {url(../src/img/bmw-moto.png)}"></div>
+```
+Контент:
+```html
+<div class="map lazy" src="yandex.map></div>"
+```

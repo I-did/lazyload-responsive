@@ -12,23 +12,12 @@
 				data-src="linear-gradient(to left, white, transparent), url(./img/car.png), url(./img/nature.jpg)"></div>
 	<img src="#" alt="#" class="flower lazy"
 				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<img src="#" alt="#" class="flower lazy"
-				data-src="./img/flower.jpg">
-	<script src="./js/lazyload-responsive.js"></script>
+	<script src="./js/lazyload.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', function(){
-			new lazyload();
-			
+			new lazyload({
+				selector: '.lazy'
+			});
 		});
 	</script>
 </body>

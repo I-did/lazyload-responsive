@@ -231,6 +231,7 @@
 			}
 
 			function windowObserver() {
+				console.log('scroll');
 
 				wndwScroll.top = pageYOffset;
 				wndwScroll.bottom = pageYOffset + window.screen.height;
@@ -243,8 +244,11 @@
 				}
 			}
 
+
 			windowObserver();
-			window.addEventListener('scroll', windowObserver);
+			document.addEventListener('scroll', function() {
+				windowObserver();
+			});
 		}
 
 		arrayEquality(arr1, arr2) {
