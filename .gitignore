@@ -1,4 +1,6 @@
 .jshintrc
+*.txt
+scripts
 
 # Logs
 logs
