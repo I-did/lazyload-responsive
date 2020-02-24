@@ -6,10 +6,260 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   <link rel="stylesheet" href="./style.css">
-  <script defer src="./js/main.js"></script>
+  <script defer src="./js/intersection-observer.min.js"></script>
+  <!-- <script defer src="./js/main.js"></script> -->
+  <script defer src="../dist/js/main.js"></script>
   <title>Lazyload responsive</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    } 
+    
+    html, body {
+      height: 100%;
+      -webkit-overflow-scrolling: touch;
+      -webkit-text-size-adjust: none;
+      -ms-text-size-adjust: 100%;
+    }
+    
+    h1, h2, h3, h4, h5, h6, p, ul, ol, form, legend, fieldset, hr, figure, body {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    
+    ol, ul {
+      list-style: none;
+    }
+    
+    q {
+      quotes: "«" "»";
+    }
+    
+    input {
+      font: inherit;
+      padding: 0;
+    }
+    
+    button, a {
+      background: none;
+      border: none;
+      color: inherit;
+      text-transform: inherit;
+      text-decoration: inherit;
+      -webkit-tap-highlight-color: transparent;
+      padding: 0;
+    }
+    
+    a,
+    pre,
+    button,
+    figure,
+    picture {
+      display: inline-flex;
+      font: inherit;
+    }
+    
+    :focus {
+      outline: 0;
+    }
+    
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    
+    input[type="search"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -webkit-box-sizing: content-box;
+      -moz-box-sizing: content-box;
+      box-sizing: content-box;
+    }
+    
+    [hidden] {
+      display: none;
+    }
+    
+    audio:not([controls]) {
+      display: none;
+      height: 0;
+    }
+    
+    a:focus {
+      outline: thin dotted;
+    }
+    
+    a:active,a:hover {
+      outline: 0;
+    }
+    
+    img {
+      border: 0;
+      -ms-interpolation-mode: bicubic;
+      vertical-align: middle;
+    }
+    
+    button,
+    html input[type="button"],
+    input[type="reset"],
+    input[type="submit"] {
+      -webkit-appearance: button;
+      cursor: pointer;
+      *overflow: visible;
+    }
+    
+    button[disabled],html input[disabled] {
+      cursor: default;
+    }
+    
+    input[type="checkbox"],input[type="radio"] {
+      box-sizing: border-box;
+      padding: 0;
+      *height: 13px;
+      *width: 13px;
+    }
+    
+    button::-moz-focus-inner,input::-moz-focus-inner {
+      border: 0;
+      padding: 0;
+    }
+    
+    textarea {
+      overflow: auto;
+      vertical-align: top;
+      resize: vertical;
+    }
+    
+    ::-moz-selection {
+      background: #b3d4fc;
+      text-shadow: none;
+    }
+    
+    ::selection {
+      background: #b3d4fc;
+      text-shadow: none;
+    }
+    
+    .chromeframe {
+      margin: 0.2em 0;
+      background: #ccc;
+      color: #000;
+      padding: 0.2em 0;
+    }
+    .container {
+      padding: 0 15px;
+    }
+    
+    .contained {
+      width: 100vw;
+      margin-left: -15px;
+    }
+    
+    @media (min-width: 575.98px) {
+      .container {
+        padding: 0 calc(50vw - 270px);
+      }
+    
+      .contained {
+        margin-left: calc((50vw - 270px) * -1);
+      }
+    }
+    
+    @media (min-width: 767.98px) {
+      .container {
+        padding: 0 calc(50vw - 360px);
+      }
+    
+      .contained {
+        margin-left: calc((50vw - 360px) * -1);
+      }
+    }
+    
+    @media (min-width: 991.98px) {
+      .container {
+        padding: 0 calc(50vw - 480px);
+      }
+    
+      .contained {
+        margin-left: calc((50vw - 480px) * -1);
+      }
+    }
+    
+    @media (min-width: 1199.98px) {
+      .container {
+        padding: 0 calc(50vw - 570px);
+      }
+    
+      .contained {
+        margin-left: calc((50vw - 570px) * -1);
+      }
+    }
+    
+  </style>
+  <style>
+    .container {
+      padding-top: 100px;
+      padding-bottom: 150px;
+      display: flex;
+      flex-direction: column;
+    }
+    .image {
+      object-fit: contain;
+      width: 500px;
+      height: 500px;
+    }
+    .car-max {
+      border: 1px solid #000;
+      margin-top: 500px;
+      width: 500px;
+      height: 500px;
+      background: url('#') center/contain no-repeat;
+    }
+    .car-min {
+      margin-top: 500px;
+      border: 1px solid green;
+      width: 500px;
+      height: 500px;
+      background: url('#') center/contain no-repeat;
+    }
+  </style>
 </head>
 <body>
- 
+  <section class="container">
+    <img src="#" alt="#" class="lazy image"
+       data-src="./img/car.1920.png"
+       data-media="(max-width: 1200px) {./img/car.1200.png}
+                   (max-width: 576px) {./img/car.576.png}">
+
+    <div class="lazy car-max"
+        data-src="url(./img/car.1920.png), linear-gradient(to top, red, black)"
+        data-media="(max-width: 1200px) {url(./img/car.1200.png), linear-gradient(to top, blue, black)}
+                    (max-width: 576px) {url(./img/car.576.png), linear-gradient(to top, orange, red, black)}"></div>
+
+    <div class="lazy car-min"
+        data-src="url(./img/car.576.png)"
+        data-media="(min-width: 768px) {url(./img/car.1200.png)}
+                    (min-width: 1200px) {url(./img/car.1920.png)}"></div>
+  </section>
+  
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let car = document.querySelector('.car-max');
+
+      car.addEventListener('lazyinit', function() {
+        console.log(event.type);
+      });
+
+      car.addEventListener('lazyloaded', function() {
+        console.log(event.type);
+      });
+
+      let lazy = new lazyload();
+    });
+ </script>
 </body>
 </html>
