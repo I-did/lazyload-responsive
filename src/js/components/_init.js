@@ -29,8 +29,7 @@ let _ = this,
       }
     }
     _.elements.push(nodeList[i]);
-    let evt = new Event('lazyinit');
+    let evt = new CustomEvent('lazyinit');
     nodeList[i].dispatchEvent(evt);
-    console.log(nodeList[i]);
   }
 _.startObserve();

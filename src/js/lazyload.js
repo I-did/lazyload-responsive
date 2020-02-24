@@ -65,9 +65,8 @@
           }
         }
         _.elements.push(nodeList[i]);
-        let evt = new Event('lazyinit');
+        let evt = new CustomEvent('lazyinit');
         nodeList[i].dispatchEvent(evt);
-        console.log(nodeList[i]);
       }
     _.startObserve();
   };
@@ -111,7 +110,7 @@
               element.style.backgroundImage = currentImage;
               break;
           }
-          let evt = new Event('lazyloaded');
+          let evt = new CustomEvent('lazyloaded');
           element.dispatchEvent(evt);
           imageObserver.unobserve(element);
         }

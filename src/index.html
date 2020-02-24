@@ -6,9 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   <link rel="stylesheet" href="./style.css">
-  <script defer src="./js/intersection-observer.min.js"></script>
-  <!-- <script defer src="./js/main.js"></script> -->
-  <script defer src="../dist/js/main.js"></script>
+  <script defer src="../dist/js/intersection-observer.min.js"></script>
+  <script defer src="../dist/js/custom-events.js"></script>
+  <!-- <script defer src="../dist/js/lazyload.js"></script> -->
+  <script defer src="./js/lazyload.js"></script>
   <title>Lazyload responsive</title>
   <style>
     *, *::before, *::after {
@@ -206,6 +207,7 @@
       padding-bottom: 150px;
       display: flex;
       flex-direction: column;
+      padding-bottom: 1000px;
     }
     .image {
       object-fit: contain;
@@ -230,10 +232,14 @@
 </head>
 <body>
   <section class="container">
-    <img src="#" alt="#" class="lazy image"
+    <!-- <img src="#" alt="#" class="lazy image"
        data-src="./img/car.1920.png"
        data-media="(max-width: 1200px) {./img/car.1200.png}
-                   (max-width: 576px) {./img/car.576.png}">
+                   (max-width: 576px) {./img/car.576.png}"> -->
+
+    <img src="#" alt="#" class="lazy image" data-src="./img/car.1200.png">
+    <div class="lazy" data-src="url(./img/car.576.png)"></div>
+
 
     <div class="lazy car-max"
         data-src="url(./img/car.1920.png), linear-gradient(to top, red, black)"
@@ -247,16 +253,17 @@
   </section>
   
  <script>
+  // console.log(msg);
     document.addEventListener('DOMContentLoaded', function() {
-      let car = document.querySelector('.car-max');
+      // let car = document.querySelector('.car-max');
 
-      car.addEventListener('lazyinit', function() {
-        console.log(event.type);
-      });
+      // car.addEventListener('lazyinit', function() {
+      //   console.log(event.type);
+      // });
 
-      car.addEventListener('lazyloaded', function() {
-        console.log(event.type);
-      });
+      // car.addEventListener('lazyloaded', function() {
+      //   console.log(event.type);
+      // });
 
       let lazy = new lazyload();
     });

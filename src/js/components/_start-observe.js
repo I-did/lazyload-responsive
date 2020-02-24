@@ -36,7 +36,7 @@ let _ = this,
           element.style.backgroundImage = currentImage;
           break;
       }
-      let evt = new Event('lazyloaded');
+      let evt = new CustomEvent('lazyloaded');
       element.dispatchEvent(evt);
       imageObserver.unobserve(element);
     }
