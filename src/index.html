@@ -237,8 +237,8 @@
        data-media="(max-width: 1200px) {./img/car.1200.png}
                    (max-width: 576px) {./img/car.576.png}"> -->
 
-    <img src="#" alt="#" class="lazy image" data-src="./img/car.1200.png">
-    <div class="lazy" data-src="url(./img/car.576.png)"></div>
+    <!-- <img src="#" alt="#" class="lazy image" data-src="./img/car.1200.png"> -->
+    <!-- <div class="lazy" data-src="url(./img/car.576.png)"></div> -->
 
 
     <div class="lazy car-max"
@@ -265,7 +265,13 @@
       //   console.log(event.type);
       // });
 
-      let lazy = new lazyload();
+      // .lazy, .lazy-pl
+
+      let lazy = new lazyload({
+        clearSrc: true,
+        clearMedia: true
+      });
+      console.log(lazy);
     });
  </script>
 </body>

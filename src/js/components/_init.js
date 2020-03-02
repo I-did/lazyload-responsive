@@ -27,9 +27,21 @@ let _ = this,
       for (let j = 0; j < lazyObjMedia.length; j++) {
         lazyObjMedia[mediaQuiries[j]] = mediaInsides[j].slice(1, -1);          
       }
+
+      if (opt.clearMedia) {
+        nodeList[i].removeAttribute('data-media');
+      }
     }
+
+    if (opt.clearSrc) {
+      nodeList[i].removeAttribute('data-src');
+    }
+
     _.elements.push(nodeList[i]);
-    let evt = new CustomEvent('lazyinit');
-    nodeList[i].dispatchEvent(evt);
+
+    if (typeof window.CustomEvent === "function") {
+      let evt = new CustomEvent('lazyinit');
+      nodeList[i].dispatchEvent(evt);
+    }
   }
 _.startObserve();

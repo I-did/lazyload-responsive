@@ -16,7 +16,9 @@
           _.defaults = {
         elements: '.lazy',
         srcAttr: 'data-src',
-        mediaAttr: 'data-media'
+        mediaAttr: 'data-media',
+        clearSrc: false,
+        clearMedia: false
       };
 
           _.elements = [];
@@ -63,10 +65,22 @@
               for (let j = 0; j < lazyObjMedia.length; j++) {
             lazyObjMedia[mediaQuiries[j]] = mediaInsides[j].slice(1, -1);          
           }
+
+              if (opt.clearMedia) {
+            nodeList[i].removeAttribute('data-media');
+          }
         }
-        _.elements.push(nodeList[i]);
-        let evt = new CustomEvent('lazyinit');
-        nodeList[i].dispatchEvent(evt);
+
+            if (opt.clearSrc) {
+          nodeList[i].removeAttribute('data-src');
+        }
+
+            _.elements.push(nodeList[i]);
+
+            if (typeof window.CustomEvent === "function") {
+          let evt = new CustomEvent('lazyinit');
+          nodeList[i].dispatchEvent(evt);
+        }
       }
     _.startObserve();
   };
@@ -110,9 +124,13 @@
               element.style.backgroundImage = currentImage;
               break;
           }
-          let evt = new CustomEvent('lazyloaded');
-          element.dispatchEvent(evt);
-          imageObserver.unobserve(element);
+
+              if (typeof window.CustomEvent === "function") {
+            let evt = new CustomEvent('lazyloaded');
+            element.dispatchEvent(evt);
+          }
+
+                    imageObserver.unobserve(element);
         }
       });
     });

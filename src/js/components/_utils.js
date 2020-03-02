@@ -5,7 +5,9 @@ function lazy(options) {
   _.defaults = {
     elements: '.lazy',
     srcAttr: 'data-src',
-    mediaAttr: 'data-media'
+    mediaAttr: 'data-media',
+    clearSrc: false,
+    clearMedia: false
   };
 
   _.elements = [];
