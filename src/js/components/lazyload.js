@@ -16,9 +16,22 @@
     //=include _init.js
   };
 
-  lazyload.prototype.startObserve = function() {
-    //=include _start-observe.js
+  lazyload.prototype.imgSrcParse = function(imageSrc, regExps) {
+    //=include _imgSrcParse.js
   };
+
+  lazyload.prototype.getPxRatio = function() {
+    //=include _getPxRatio.js
+  };
+
+  lazyload.prototype.startObserve = function() {
+    //=include _startObserve.js
+  };
+
+  lazyload.prototype.setImg = function(target) {  // устанавливаем img в зависимости от медиа-запроса и px ratio
+    //=include _setImg.js
+  };
+
 
   return lazyload;
 });

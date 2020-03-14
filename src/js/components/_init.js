@@ -3,15 +3,22 @@ let _ = this,
   nodeList = document.querySelectorAll(opt.elements),
   clearRegExp = /\n|\t|\s{2,}/gm,
   widthRegExp = /\(max\-width.*?\)|\(min\-width.*?\)/g,
-  insideRegExp = /\{.*?\}/g;
+  insideRegExp = /\{.*?\}/g,
+  imageSetRegExps = {
+    imgSet: /image-set\((.*?)\)/,
+    pxRatio: /[0-9.]+x$/,
+    src: /.*(?=\s[0-9.]+x$)/,
+    split: /\,\s|\,/
+  };
 
   for (let i = 0; i < nodeList.length; i++) {
     let mediaAttr = nodeList[i].getAttribute(opt.mediaAttr),
+      src = nodeList[i].getAttribute(opt.srcAttr),
       mediaQuiries,
       mediaInsides;
 
     nodeList[i].lazyObject = {
-      src: nodeList[i].getAttribute(opt.srcAttr),
+      src: _.imgSrcParse(src, imageSetRegExps),
       media: {}
     };
 
@@ -24,8 +31,8 @@ let _ = this,
 
       lazyObjMedia.length = mediaQuiries.length;
 
-      for (let j = 0; j < lazyObjMedia.length; j++) {
-        lazyObjMedia[mediaQuiries[j]] = mediaInsides[j].slice(1, -1);          
+      for (let j = 0; j < lazyObjMedia.length; j++) {       
+        lazyObjMedia[mediaQuiries[j]] = _.imgSrcParse(mediaInsides[j].slice(1, -1), imageSetRegExps);          
       }
 
       if (opt.clearMedia) {
@@ -44,4 +51,6 @@ let _ = this,
       nodeList[i].dispatchEvent(evt);
     }
   }
+
+_.getPxRatio();
 _.startObserve();

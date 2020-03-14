@@ -4,24 +4,35 @@ let _ = this,
   entries.forEach(function(entry) {
     if (entry.isIntersecting) {
       let element = entry.target,
-        lazyObject = element.lazyObject,
-        currentImage;
+        {src, media} = element.lazyObject,
+        currentImage,
+        currentMediaQuery;
 
-      for (let key in lazyObject.media) {
+      for (let key in media) {  // перебираем все data-media, получаем текущий медиа-запрос
         if (key !== 'length') {
           if (matchMedia(key).matches) {
-            currentImage = lazyObject.media[key];
+            currentMediaQuery = key;
           }
         }
       }
-      if (!currentImage) {
-        currentImage = lazyObject.src;
-      }
 
-      switch(element.tagName.toLowerCase()) {
+      // если попали в медиа-запрос, то в агрументе передаем data-media
+      // если не сработал ни один медиа-запрос, значит работаем с data-src
+        /*
+          obj = {
+            1px: src/src/img.png,
+            2px: src/src/img.png
+          }
+        */
+
+      let obj = (currentMediaQuery) ? media[currentMediaQuery] : (!currentImage) ? src : '';
+
+      currentImage = _.setImg(obj);
+
+      switch(element.tagName.toLowerCase()) { // проверяем на тэги и подставляем img в src или style
         case 'img':
-        case 'iframe':
-        case 'video':
+        // case 'iframe':
+        // case 'video':
           element.src = currentImage;
           break;
         case 'header':
@@ -52,6 +63,7 @@ for (let i = 0; i < elements.length; i++) {
 }
 
 window.addEventListener('resize', function() {
+  _.getPxRatio();
   for (let i = 0; i < elements.length; i++) {
     imageObserver.unobserve(elements[i]);
     imageObserver.observe(elements[i]);

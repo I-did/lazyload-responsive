@@ -48,3 +48,11 @@ car.addEventListener('lazyloaded', function() {
 <script defer src="js/custom-events.js"></script>
 <script defer src="js/lazyload.js"></script>
 ```
+
+Можно очистить `data-src` и `data-media` у всех элементов после инициализации скрипта:
+```javascript
+new lazyload({
+  clearSrc: true,
+  clearMedia: true
+});
+```

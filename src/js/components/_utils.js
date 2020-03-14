@@ -11,6 +11,7 @@ function lazy(options) {
   };
 
   _.elements = [];
+  _.currentPixelRatio = {};
 
   for (let key in _.defaults) {
     if (_.options[key] === undefined) {

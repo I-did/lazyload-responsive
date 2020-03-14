@@ -209,6 +209,9 @@
       flex-direction: column;
       padding-bottom: 1000px;
     }
+    img {
+      object-fit: contain;
+    }
     .image {
       object-fit: contain;
       width: 500px;
@@ -233,27 +236,52 @@
 <body>
   <section class="container">
     <!-- <img src="#" alt="#" class="lazy image"
-       data-src="./img/car.1920.png"
-       data-media="(max-width: 1200px) {./img/car.1200.png}
+       data-src="image-set(./img/car.1920.png 1x, ./img/car.1200.png 2x)"
+       data-media="(max-width: 1200px) {image-set(./img/car.1200.png 1x, ./img/car.576.png 2x)}
                    (max-width: 576px) {./img/car.576.png}"> -->
+                   <!-- Надо применять toFixed -->
+                   <!-- Если x <= 1, то 1x -->
+                   <!-- Если x > 1 и x <= 2, то 2x -->
+                   <!-- Если x > 2 и x <= 3, то 3x -->
+                   <!-- Если x > 3 и x <= 4, то 4x -->
+      <img class="lazy" src="#" alt="#"
+           data-src="image-set(img/retina/x1.png 1x, img/retina/x3.png 3x)"
+           >
+           <!-- data-media="(max-width: 992px) {image-set(./img/car.1200.png 1x, ./img/car.576.png 2x)}
+                        (max-width: 768px) {image-set(./img/car.1200.png 3x, ./img/car.576.png 2x)}" -->
 
+      <!-- <img class="lazy" src="#" alt="#"
+           data-src="image-set(img/retina/x1.png 1x, img/retina/x3.png 3x)"
+           data-media="(min-width: 768px) {image-set(./img/car.1200.png 1x, ./img/car.576.png 2x)}
+                        (min-width: 992px) {image-set(./img/car.1200.png 3x, ./img/car.576.png 1x)}"> -->
+           
+     <!--  <img src="#" alt="#" data-src="./img/car.576.png"
+           data-media="(min-width: 768px) {./img/car.1200.png}
+                      (min-width: 1200px) {./img/car.1920.png}" class="lazy">
+ -->
+        <!--    <img class="lazy" src="#" alt="#"
+           data-src="img/retina/x1.png"
+           data-media="(max-width: 1200px) {./img/car.1200.png 1x}"> -->
     <!-- <img src="#" alt="#" class="lazy image" data-src="./img/car.1200.png"> -->
     <!-- <div class="lazy" data-src="url(./img/car.576.png)"></div> -->
-
+    <!-- <div style="width: 200px; height: 200px; background: url(#) center/contain no-repeat;"></div>
 
     <div class="lazy car-max"
         data-src="url(./img/car.1920.png), linear-gradient(to top, red, black)"
-        data-media="(max-width: 1200px) {url(./img/car.1200.png), linear-gradient(to top, blue, black)}
+        data-media="(max-width: 1200px) {image-set(url(./img/car.1200.png) 1x, url(./img/car.1200.png) 2x),
+                                         linear-gradient(to top, blue, black),
+                                         image-set(url(./img/car.1200.png) 1x, url(./img/car.1200.png) 2x)}
                     (max-width: 576px) {url(./img/car.576.png), linear-gradient(to top, orange, red, black)}"></div>
-
-    <div class="lazy car-min"
+ -->
+   <!--  <div class="lazy car-min"
         data-src="url(./img/car.576.png)"
         data-media="(min-width: 768px) {url(./img/car.1200.png)}
-                    (min-width: 1200px) {url(./img/car.1920.png)}"></div>
+                    (min-width: 1200px) {url(./img/car.1920.png)}"></div> -->
+
   </section>
-  
+<!--   <script src="#" data-src="js/components/lazyload.js" class="lazy"></script> -->
  <script>
-  // console.log(msg);
+
     document.addEventListener('DOMContentLoaded', function() {
       // let car = document.querySelector('.car-max');
 
@@ -268,10 +296,10 @@
       // .lazy, .lazy-pl
 
       let lazy = new lazyload({
-        clearSrc: true,
-        clearMedia: true
+        // clearSrc: true,
+        // clearMedia: true
       });
-      console.log(lazy);
+      // console.log(lazy);
     });
  </script>
 </body>
