@@ -50,6 +50,17 @@
      data-src="image-set(url(img/car.576.png 1x), url(img/car.576.png 2x), url(img/car.576.png 3x))"
 ```
 
+Методы:
+```javascript
+let lazy = new lazyload();
+
+// Если изображения добавляются на сайт динамически, то можно обновить lazyload:
+lazy.refresh(); // Ищет элементы с классом .lazy (за которыми еще не установлено наблюдение) и устанавливает наблюдение
+
+// Можно отключить lazyload
+lazy.destroy();
+```
+
 События:
 ```javascript
 let car = document.querySelector('.lazy.car');

@@ -18,5 +18,3 @@ if (imageSrc.search('image-set') !== -1) {
 } else {
   return imageSrc;
 }
-
-console.log(imageSrc);

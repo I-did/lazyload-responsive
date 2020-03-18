@@ -23,6 +23,11 @@
 
           _.elements = [];
       _.currentPixelRatio = {};
+      _.imageObserver = null;
+      _.resizeHandler = {
+        handleEvent: _.windowResizeEvent,
+        ctx: _
+      };
 
           for (let key in _.defaults) {
         if (_.options[key] === undefined) {
@@ -37,9 +42,22 @@
   })();
 
   lazyload.prototype.init = function() {
-    let _ = this,
+    let _ = this;
+
+        _.createImgLazyObject();
+    _.getPxRatio();
+    _.createObserver();
+    _.startObserve();
+
+        window.addEventListener('resize', _.resizeHandler);
+
+  };
+
+  lazyload.prototype.createImgLazyObject = function(images) {
+
+        let _ = this,
       opt = _.options,
-      nodeList = document.querySelectorAll(opt.elements),
+      nodeList = images || document.querySelectorAll(opt.elements),
       clearRegExp = /\n|\t|\s{2,}/gm,
       widthRegExp = /\(max\-width.*?\)|\(min\-width.*?\)/g,
       insideRegExp = /\{.*?\}/g,
@@ -50,49 +68,46 @@
         split: /\,\s|\,/
       };
 
-          for (let i = 0; i < nodeList.length; i++) {
-        let mediaAttr = nodeList[i].getAttribute(opt.mediaAttr),
-          src = nodeList[i].getAttribute(opt.srcAttr),
-          mediaQuiries,
-          mediaInsides;
+        for (let i = 0; i < nodeList.length; i++) {
+      let mediaAttr = nodeList[i].getAttribute(opt.mediaAttr),
+        src = nodeList[i].getAttribute(opt.srcAttr),
+        mediaQuiries,
+        mediaInsides;
 
-            nodeList[i].lazyObject = {
-          src: _.imgSrcParse(src, imageSetRegExps),
-          media: {}
-        };
+          nodeList[i].lazyObject = {
+        src: _.imgSrcParse(src, imageSetRegExps),
+        media: {}
+      };
 
-            if (mediaAttr) {
-          mediaAttr = mediaAttr.replace(clearRegExp, '');
-          mediaQuiries = mediaAttr.match(widthRegExp);
-          mediaInsides = mediaAttr.match(insideRegExp);
+          if (mediaAttr) {
+        mediaAttr = mediaAttr.replace(clearRegExp, '');
+        mediaQuiries = mediaAttr.match(widthRegExp);
+        mediaInsides = mediaAttr.match(insideRegExp);
 
-              let lazyObjMedia = nodeList[i].lazyObject.media;
+            let lazyObjMedia = nodeList[i].lazyObject.media;
 
-              lazyObjMedia.length = mediaQuiries.length;
+            lazyObjMedia.length = mediaQuiries.length;
 
-              for (let j = 0; j < lazyObjMedia.length; j++) {       
-            lazyObjMedia[mediaQuiries[j]] = _.imgSrcParse(mediaInsides[j].slice(1, -1), imageSetRegExps);          
-          }
-
-              if (opt.clearMedia) {
-            nodeList[i].removeAttribute('data-media');
-          }
+            for (let j = 0; j < lazyObjMedia.length; j++) {       
+          lazyObjMedia[mediaQuiries[j]] = _.imgSrcParse(mediaInsides[j].slice(1, -1), imageSetRegExps);          
         }
 
-            if (opt.clearSrc) {
-          nodeList[i].removeAttribute('data-src');
-        }
-
-            _.elements.push(nodeList[i]);
-
-            if (typeof window.CustomEvent === "function") {
-          let evt = new CustomEvent('lazyinit');
-          nodeList[i].dispatchEvent(evt);
+            if (opt.clearMedia) {
+          nodeList[i].removeAttribute('data-media');
         }
       }
 
-        _.getPxRatio();
-    _.startObserve();
+          if (opt.clearSrc) {
+        nodeList[i].removeAttribute('data-src');
+      }
+
+          _.elements.push(nodeList[i]);
+
+          if (typeof window.CustomEvent === "function") {
+        let evt = new CustomEvent('lazyinit');
+        nodeList[i].dispatchEvent(evt);
+      }
+    }
   };
 
   lazyload.prototype.imgSrcParse = function(imageSrc, regExps) {
@@ -115,8 +130,6 @@
             } else {
       return imageSrc;
     }
-
-        console.log(imageSrc);
   };
 
   lazyload.prototype.getPxRatio = function() {
@@ -146,10 +159,10 @@
     _.currentPixelRatio.num = num;
   };
 
-  lazyload.prototype.startObserve = function() {
-    let _ = this,
-      elements = _.elements,
-      imageObserver = new IntersectionObserver(function(entries) {
+  lazyload.prototype.createObserver = function() {
+    let _ = this;
+
+        _.imageObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           let element = entry.target,
@@ -192,22 +205,20 @@
             element.dispatchEvent(evt);
           }
 
-                    imageObserver.unobserve(element);
+                    _.imageObserver.unobserve(element);
         }
       });
     });
 
-        for (let i = 0; i < elements.length; i++) {
-      imageObserver.observe(elements[i]);
-    }
+  };
 
-        window.addEventListener('resize', function() {
-      _.getPxRatio();
-      for (let i = 0; i < elements.length; i++) {
-        imageObserver.unobserve(elements[i]);
-        imageObserver.observe(elements[i]);
-      }
-    });
+  lazyload.prototype.startObserve = function(images) {
+    let _ = this,
+      elements = images || _.elements;
+
+        for (let i = 0; i < elements.length; i++) {
+      _.imageObserver.observe(elements[i]);
+    }
   };
 
   lazyload.prototype.setImg = function(target) {  
@@ -239,6 +250,52 @@
     }
 
         return currentImage;
+  };
+
+  lazyload.prototype.windowResizeEvent = function(ctx) {
+    let _ = this.ctx || this,
+      elements = _.elements;
+
+        _.getPxRatio();
+
+        for (let i = 0; i < elements.length; i++) {
+      _.imageObserver.unobserve(elements[i]);
+      _.imageObserver.observe(elements[i]);
+    }
+  };
+
+  lazyload.prototype.destroy = function() {  
+    let _ = this;
+
+        window.removeEventListener('resize', _.resizeHandler);
+    _.imageObserver.disconnect();
+
+        for (let i = 0; i < _.elements.length; i++) {
+      delete _.elements[i].lazyObject;
+    }
+
+        _.elements = [];
+    _.currentPixelRatio = {};
+    _.imageObserver = null;
+  };
+
+  lazyload.prototype.refresh = function() {  
+    let _ = this,
+      allElements = document.querySelectorAll(_.options.elements),
+      newElements = [];
+
+          for (let i = 0; i < allElements.length; i++) {
+        if (!allElements[i].lazyObject) {
+          newElements.push(allElements[i]);
+        }
+      }
+
+          _.createImgLazyObject(newElements);
+      _.startObserve(newElements);
+
+          window.removeEventListener('resize', _.resizeHandler);
+      window.addEventListener('resize', _.resizeHandler);
+
   };
 
 

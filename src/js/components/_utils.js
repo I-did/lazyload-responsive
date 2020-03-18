@@ -12,6 +12,11 @@ function lazy(options) {
 
   _.elements = [];
   _.currentPixelRatio = {};
+  _.imageObserver = null;
+  _.resizeHandler = {
+    handleEvent: _.windowResizeEvent,
+    ctx: _
+  };
 
   for (let key in _.defaults) {
     if (_.options[key] === undefined) {
