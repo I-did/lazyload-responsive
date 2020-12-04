@@ -1,14 +1,14 @@
 # lazyload responsive
 
-[Использование](#img)
-[Использование для background, множественные фоны](#bg)
-[Использование с медиа-запросами](#media)
-[Использование для псевдоэлементов ::after или ::before](#after-before)
-[Настройка для retina](#retina)
-[Методы](#methods)
-[События](#events)
-[Поддержка браузерами](#browsers)
-[Все настройки класса и data-attributes](#other)
+- [Использование](#img)
+- [Использование для background, множественные фоны](#bg)
+- [Использование с медиа-запросами](#media)
+- [Использование для псевдоэлементов ::after или ::before](#after-before)
+- [Настройка для retina](#retina)
+- [Методы](#methods)
+- [События](#events)
+- [Поддержка браузерами](#browsers)
+- [Все настройки класса и data-attributes](#other)
 
 Обычный lazyload скрипт, поддерживающий медиа-запросы. Может частично заменить picture>source.
 Использует [intersectionObserver](https://developer.mozilla.org/ru/docs/Web/API/Intersection_Observer_API).
@@ -41,12 +41,14 @@
 ```
 
 ## Использование для background, множественные фоны
+<span id="bg"></span>
 Чтобы установить несколько фонов, нужно перечислять их через запятую, обязательно оборачивая путь `url()`.
 ```html
 <div class="lazy" data-src="url(./img/car.1920.png), linear-gradient(to top, red, black)"></div>
 ```
 
 ## Использование с медиа-запросами
+<span id="media"></span>
 Тело каждого меди-запроса должно находиться в фигурных скобках `{}`. `(max-width)` должны следовать в порядке убывания, а `(min-width)` в порядке возрастания ширины экрана.
 ```html
 <img src="" alt="" class="lazy image"
@@ -61,6 +63,7 @@
 ```
 
 ## Использование для псевдоэлементов ::after или ::before
+<span id="after-before"></span>
 Использование для псевдоэлементов сводится к изменению стилей в зависимости от класса родителя с lazyload, например, установка иконки телефона:
 ```html
 <a href="tel:81112223344" class="tel lazy" data-src="null">+7(111)222-33-44</a>
@@ -84,6 +87,7 @@
 Таким образом, когда ссылка телефона появится в области просмотра браузера, ей добавится класс `lazyloaded` и для псевдоэлемента `::before` будет задано фоновое изображение.
 
 ## Настройка для retina
+<span id="retina"></span>
 Для retina дисплеев можно передать несколько изображений в image-set(), синтаксис аналогичен srcset:
 ```html
 <img class="lazy" src="" alt=""
@@ -99,6 +103,7 @@
 ```
 
 ## Методы
+<span id="methods"></span>
 ```javascript
 let lazy = new lazyload();
 
@@ -110,6 +115,7 @@ lazy.destroy();
 ```
 
 ## События
+<span id="events"></span>
 ```javascript
 let car = document.querySelector('.car.lazy');
 
@@ -122,6 +128,7 @@ car.addEventListener('lazyloaded', function() {
 });
 ```
 ## Поддержка браузерами
+<span id="browsers"></span>
 Edge 16+
 Firefox 55+,
 Chrome 58+
@@ -140,6 +147,7 @@ iOS, Safari 12.2+
 ```
 
 ## Все настройки
+<span id="other"></span>
 Указаны default значения.
 ```javascript
 new lazyload({
