@@ -1,4 +1,5 @@
-;(function(factory) {
+;
+(function(factory) {
   if (typeof define === "function" && define.amd) {
     define([], factory);
   } else if (typeof exports === "object") {
@@ -7,62 +8,59 @@
     window.lazyload = factory();
   }
 })(function() {
-  
+
   lazyload = (function() {
-    //=include _utils.js
+    function lazy(options) {
+      let _ = this;
+      _.options = options || {};
+
+      _.defaults = {
+        elements: '.lazy',
+        srcAttr: 'data-src',
+        mediaAttr: 'data-media',
+        clearSrc: false,
+        clearMedia: false
+      };
+
+      _.elements = [];
+      _.currentPixelRatio = {};
+      _.imageObserver = null;
+      _.resizeHandler = {
+        handleEvent: _.windowResizeEvent,
+        ctx: _
+      };
+
+      for (let key in _.defaults) {
+        if (_.options[key] === undefined) {
+          _.options[key] = _.defaults[key];
+        }
+      }
+
+      _.init();
+    }
+
+    return lazy;
   })();
 
-  lazyload.prototype.init = function() {
-    //=include _init.js
+  //=include _init.js
+  
+  //=include _createImgLazyObject.js
 
-    // _.createImgLazyObject(); -> _.imgSrcParse();
-    // _.getPxRatio();
-    // _.createObserver();
-    // _.startObserve();
-    // _.windowResizeEvent();
-  };
+  //=include _imgSrcParse.js
 
-  lazyload.prototype.createImgLazyObject = function(images) {
-    //=include _createImgLazyObject.js
-  };
+  //=include _getPxRatio.js
 
-  lazyload.prototype.imgSrcParse = function(imageSrc, regExps) {
-    //=include _imgSrcParse.js
-  };
+  //=include _createObserver.js
 
-  lazyload.prototype.getPxRatio = function() {
-    //=include _getPxRatio.js
-  };
+  //=include _startObserve.js
 
-  lazyload.prototype.createObserver = function() {
-    //=include _createObserver.js
+  //=include _setImg.js
 
-    // _.setImg();
-  };
+  //=include _windowResizeEvent.js
 
-  lazyload.prototype.startObserve = function(images) {
-    //=include _startObserve.js
-  };
+  //=include _destroy.js
 
-  lazyload.prototype.setImg = function(target) {  // устанавливаем img в зависимости от медиа-запроса и px ratio
-    //=include _setImg.js
-  };
-
-  lazyload.prototype.windowResizeEvent = function(ctx) {
-    //=include _windowResizeEvent.js
-  };
-
-  lazyload.prototype.destroy = function() {  // удаление lazy
-    //=include _destroy.js
-  };
-
-  lazyload.prototype.refresh = function() {  // обновление lazy
-    //=include _refresh.js
-
-    // _.createImgLazyObject(); -> _.imgSrcParse();
-    // _.windowResizeEvent();
-  };
-
+  //=include _refresh.js
 
   return lazyload;
 });

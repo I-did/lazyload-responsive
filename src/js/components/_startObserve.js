@@ -1,7 +1,8 @@
-// args: images
-let _ = this,
-  elements = images || _.elements;
+lazyload.prototype.startObserve = function(images) {
+  let _ = this,
+    elements = images || _.elements;
 
-for (let i = 0; i < elements.length; i++) {
-  _.imageObserver.observe(elements[i]);
+  for (let i = 0; i < elements.length; i++) {
+    _.imageObserver.observe(elements[i]);
+  }
 }

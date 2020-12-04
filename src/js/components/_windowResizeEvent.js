@@ -1,10 +1,12 @@
-// args: _
-let _ = this.ctx || this,
-  elements = _.elements;
+lazyload.prototype.windowResizeEvent = function(ctx) {
+  let _ = this.ctx || this,
+    elements = _.elements;
 
-_.getPxRatio();
+  _.getPxRatio();
 
-for (let i = 0; i < elements.length; i++) {
-  _.imageObserver.unobserve(elements[i]);
-  _.imageObserver.observe(elements[i]);
+  for (let i = 0; i < elements.length; i++) {
+    clearTimeout(elements[i].lazyObject.lazyTimer);
+    _.imageObserver.unobserve(elements[i]);
+    _.imageObserver.observe(elements[i]);
+  }
 }

@@ -1,10 +1,10 @@
-// args: imageSrc, regExps (imgSet, pxRatio, src, split)
-let _ = this;
+lazyload.prototype.imgSrcParse = function(imageSrc, regExps) {
+  let _ = this;
 
-if (imageSrc.search('image-set') !== -1) {
-  let src = {},
-    imagesString = imageSrc.replace(regExps.imgSet, '$1'),
-    imagesArray = imagesString.split(regExps.split);
+  if (imageSrc.search('image-set') !== -1) {
+    let src = {},
+      imagesString = imageSrc.replace(regExps.imgSet, '$1'),
+      imagesArray = imagesString.split(regExps.split);
 
     for (let j = 0; j < imagesArray.length; j++) {
       let pixelRatio = imagesArray[j].match(regExps.pxRatio)[0],
@@ -15,6 +15,7 @@ if (imageSrc.search('image-set') !== -1) {
     return src;
 
 
-} else {
-  return imageSrc;
+  } else {
+    return imageSrc;
+  }
 }

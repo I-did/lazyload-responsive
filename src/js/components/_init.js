@@ -1,8 +1,10 @@
-let _ = this;
+lazyload.prototype.init = function() {
+  let _ = this;
 
-_.createImgLazyObject();
-_.getPxRatio();
-_.createObserver();
-_.startObserve();
+  _.createImgLazyObject();
+  _.getPxRatio();
+  _.createObserver();
+  _.startObserve();
 
-window.addEventListener('resize', _.resizeHandler);
+  window.addEventListener('resize', _.resizeHandler);
+}

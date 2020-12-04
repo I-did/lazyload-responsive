@@ -202,6 +202,15 @@
     
   </style>
   <style>
+    .map {
+      margin-top: 1000px;
+      width: 250px;
+      height: 250px;
+      border: 1px solid #000;
+    }
+    .map.lazyloaded {
+      background: rgba(200, 0, 0, .5)
+    }
     .container {
       padding-top: 100px;
       padding-bottom: 150px;
@@ -244,7 +253,7 @@
                    <!-- Если x > 1 и x <= 2, то 2x -->
                    <!-- Если x > 2 и x <= 3, то 3x -->
                    <!-- Если x > 3 и x <= 4, то 4x -->
-      <img class="lazy" src="#" alt="#"
+      <img data-lazy-delay="2000" class="lazy" src="" alt=""
            data-src="image-set(img/retina/x1.png 1x, img/retina/x3.png 3x)"
            data-media="(max-width: 992px) {image-set(./img/car.1200.png 1x, ./img/car.576.png 2x)}
                         (max-width: 768px) {image-set(./img/car.1200.png 3x, ./img/car.576.png 2x)}">
@@ -279,6 +288,10 @@
         data-media="(min-width: 768px) {url(./img/car.1200.png)}
                     (min-width: 1200px) {url(./img/car.1920.png)}"></div> -->
 
+                    <div class="map lazy" data-src="null" data-lazy-delay="2000">
+                      
+                    </div>
+
   </section>
 <!--   <script src="#" data-src="js/components/lazyload.js" class="lazy"></script> -->
  <script>
@@ -297,30 +310,30 @@
       // .lazy, .lazy-pl
 
       let lazy = new lazyload({
-        // clearSrc: true,
-        // clearMedia: true
+        clearSrc: true,
+        clearMedia: true
       });
-      console.log(lazy);
-
-      setTimeout(function()  {
-        let img = document.createElement('img');
-        img.classList.add('lazy');
-        img.src = "#";
-        img.alt = "#";
-        img.dataset.src = "./img/car.576.png";
-        img.style.cssText = "width:200px; height:200px; object-fit: contain; border: 1px solid red;";
-
-        document.body.insertAdjacentElement('beforeend', img);
-
-        lazy.refresh();
-        console.log(lazy);
-      }, 1000);
       // console.log(lazy);
 
-      setTimeout(function() {
-        lazy.destroy();
-        console.log(lazy);
-      }, 2000);
+      // setTimeout(function()  {
+      //   let img = document.createElement('img');
+      //   img.classList.add('lazy');
+      //   img.src = "#";
+      //   img.alt = "#";
+      //   img.dataset.src = "./img/car.576.png";
+      //   img.style.cssText = "width:200px; height:200px; object-fit: contain; border: 1px solid red;";
+
+      //   document.body.insertAdjacentElement('beforeend', img);
+
+      //   lazy.refresh();
+      //   console.log(lazy);
+      // }, 1000);
+      // // console.log(lazy);
+
+      // setTimeout(function() {
+      //   lazy.destroy();
+      //   console.log(lazy);
+      // }, 2000);
     });
  </script>
 </body>

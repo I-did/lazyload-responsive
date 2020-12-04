@@ -1,6 +1,7 @@
-let _ = this,
-  allElements = document.querySelectorAll(_.options.elements),
-  newElements = [];
+lazyload.prototype.refresh = function() {
+  let _ = this,
+    allElements = document.querySelectorAll(_.options.elements),
+    newElements = [];
 
   for (let i = 0; i < allElements.length; i++) {
     if (!allElements[i].lazyObject) {
@@ -13,3 +14,4 @@ let _ = this,
 
   window.removeEventListener('resize', _.resizeHandler);
   window.addEventListener('resize', _.resizeHandler);
+}
